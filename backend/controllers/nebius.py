@@ -8,7 +8,6 @@ from fpdf import FPDF
 import json
 from database.database import get_connection
 from utils.pinecone_db import generate_query_embedding, search_in_pinecone
-from .chatLogProcessing import chatlog_from_chatid
 
 load_dotenv()
 

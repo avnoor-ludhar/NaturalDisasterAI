@@ -27,14 +27,14 @@ export default function Navbar(): JSX.Element{
         navigate('/');
     }
 
-    const hideNavbarRoutes = ['/chat', '/upload-chat', '/home', '/itinerary', '/disaster-form'];
+    const hideNavbarRoutes = ['/home', '/disaster-form', '/disaster-view'];
     const shouldShowNavbar = hideNavbarRoutes.includes(location.pathname);
 
     return(
         <div>
             <nav className='w-full flex flex-row justify-between items-center px-10 py-6 font-Montserrat'>
                 <Link to="/" className="flex flex-row items-center">
-                    <p className="text-2xl font-bold leading-10 text-center bg-gradient-to-r from-green-500 via-green-700 to-black text-transparent bg-clip-text">
+                    <p className="text-2xl font-bold leading-10 text-center bg-gradient-to-r from-red-500 via-red-700 to-black text-transparent bg-clip-text">
                         NaturalDisasterAI
                     </p>
                 </Link>
@@ -48,11 +48,11 @@ export default function Navbar(): JSX.Element{
                                 <Link to="/home" >
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
                                 </Link>
-                                <Link to="/upload-chat" >
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Upload chats</NavigationMenuLink>
+                                <Link to="/disaster-form" >
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Add Updates</NavigationMenuLink>
                                 </Link>
                                 <Link to="/chat" >
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Chat with bot</NavigationMenuLink>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>View Recent Updates</NavigationMenuLink>
                                 </Link>
                                 <Link to="/itinerary" >
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>Generate itinerary</NavigationMenuLink>

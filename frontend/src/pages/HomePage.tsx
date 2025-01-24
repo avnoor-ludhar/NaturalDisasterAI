@@ -5,43 +5,54 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 function HomePage() {
   const navigate: NavigateFunction = useNavigate();
 
-  const handleChatNav = () => {
-    navigate('/chat');
+  const handleDisasterUpload = () => {
+    navigate('/disaster-form');
   }
   
-  const handleChatlogNav = () => {
-    navigate('/upload-chat');
+  const handleDisasterView = () => {
+    navigate('/disaster-view');
   }
 
   return (
     <div className="text-black p-8">
-      <h1 className="text-3xl font-semibold text-center bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-transparent bg-clip-text mb-8">
-        Welcome to HomeWorthAI
+      <h1 className="text-3xl font-semibold text-center bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-transparent bg-clip-text mb-8">
+        Welcome to NaturalDisasterAI
       </h1>
-      <div className="flex flex-row justify-evenly">
+      <div className="flex flex-row flex-wrap mb-4 gap-10 justify-evenly">
         <Card className="hover:shadow-lg transition-shadow flex flex-col h-[300px] max-w-[300px]">
           <CardHeader>
-            <CardTitle>Chat with AI</CardTitle>
-            <CardDescription>Start a conversation with our AI assistant</CardDescription>
+            <CardTitle>Upload Data</CardTitle>
+            <CardDescription>For disaster prevention</CardDescription>
           </CardHeader>
           <CardContent className="flex-grow">
-            <p>Ask questions and get intelligent responses about your chatlogs</p>
+            <p>Upload data to help others see data from your region for natural disasters</p>
           </CardContent>
           <CardFooter className="mt-auto">
-            <Button className="w-full py-3 text-black rounded-lg hover:bg-green-400 bg-green-600" onClick={handleChatNav}>Start Chat</Button>
+            <Button className="w-full py-3 text-black rounded-lg hover:bg-red-400 bg-red-600" onClick={handleDisasterUpload}>Upload Data</Button>
           </CardFooter>
         </Card>
 
         <Card className="hover:shadow-lg transition-shadow flex flex-col h-[300px] max-w-[300px]">
           <CardHeader>
-            <CardTitle>Upload Chatlog/Images</CardTitle>
-            <CardDescription>Share your conversation history</CardDescription>
+            <CardTitle>View Previous Data</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow">
-            <p>Upload and analyze your previous chat conversations and images</p>
+            <p>Click here to see if anyone uploaded a disaster near you</p>
           </CardContent>
           <CardFooter className="mt-auto">
-            <Button className="w-full py-3 text-black rounded-lg hover:bg-green-400 bg-green-600" onClick={handleChatlogNav}>Upload Now</Button>
+            <Button className="w-full py-3 text-black rounded-lg hover:bg-red-400 bg-red-600" onClick={handleDisasterView}>View Data</Button>
+          </CardFooter>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow flex flex-col h-[300px] max-w-[300px]">
+          <CardHeader>
+            <CardTitle>View Previous Disasters</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-grow">
+            <p>Click here to see history of natural disasters</p>
+          </CardContent>
+          <CardFooter className="mt-auto">
+            <Button className="w-full py-3 text-black rounded-lg hover:bg-red-400 bg-red-600" onClick={handleDisasterView}>View Previous Disasters</Button>
           </CardFooter>
         </Card>
       </div>

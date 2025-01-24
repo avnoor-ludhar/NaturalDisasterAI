@@ -38,6 +38,7 @@ CREATE TABLE messages (
     user_id INT REFERENCES users(user_id),
     disaster VARCHAR(255) NOT NULL,
     content TEXT,
-    CITY VARCHAR(255) NOT NULL,
-    PROVINCE VARCHAR(255) NOT NULL
+    city VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
+    curr_time date
 );

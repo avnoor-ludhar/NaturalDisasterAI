@@ -4,7 +4,7 @@ from utils.pinecone_db import extract_insights_from_chatlog, generate_embeddings
 from database.database import get_connection
 import re
 from pydantic import BaseModel
-from pydantic import BaseModel
+from datetime import datetime 
 
 
 
@@ -30,20 +30,47 @@ async def disasterUpload(data: userData = Body(...)):
     try:
         # Insert into the database
         query = """
-        INSERT INTO messages (user_id, disaster, content, CITY, PROVINCE)
-        VALUES (%s, %s, %s, %s, %s);
+        INSERT INTO messages (user_id, disaster, content, city, province, curr_time)
+        VALUES (%s, %s, %s, %s, %s, %s);
         """
         values = (
             data.user_id,
             data.disasterType,
             data.disasterDescription,
             data.City,
-            data.Province
+            data.Province,
+            datetime.now()
         )
         cursor.execute(query, values)
         conn.commit()
 
         return {"Result": "Success on disaster data upload to db"}
+        
+    except Exception as e:
+        print(f"Error inserting data: {e}")
+        raise HTTPException(status_code=400, detail="DB error.")
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    
+
+@router.get("/disaster-posts")
+async def disasterUpload():    
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Insert into the database
+        query = """
+        SELECT * FROM  messages LIMIT 10;
+        """
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        return {"data": rows}
         
     except Exception as e:
         print(f"Error inserting trade decision: {e}")
@@ -54,4 +81,3 @@ async def disasterUpload(data: userData = Body(...)):
             cursor.close()
         if conn:
             conn.close()
-    

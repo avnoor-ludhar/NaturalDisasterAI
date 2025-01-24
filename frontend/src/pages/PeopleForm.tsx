@@ -79,7 +79,6 @@ function DisasterForm(): JSX.Element {
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-4">
-                    {/* First Name and Last Name */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-1">
                         <Label htmlFor="City">City</Label>

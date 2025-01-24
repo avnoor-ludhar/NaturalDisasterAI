@@ -6,13 +6,11 @@ import { useEffect, useState } from 'react';
 import api from './lib/axios';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
-import ChatPage from './pages/Chat';
 import SignUp from './pages/SignUp';
-import UploadChat from './pages/UploadChat'
 import Navbar from './components/navbar';
 import { LoaderCircle } from 'lucide-react';
-import { SharedDataProvider } from './components/SharedDataProvider';
 import DisasterForm from './pages/PeopleForm';
+import DisasterView from './pages/ViewPosts';
 
 type userType = {
   email: string,
@@ -30,7 +28,7 @@ function App() {
       try {
         const response = await api.get("/api/user/session");
         const user: userType = { token: response.data.token, email: response.data.email };
-        dispatch(addUser(user)); // Update Redux with user data
+        dispatch(addUser(user));
       } catch (error) {
         console.error("No active session or invalid token");
         dispatch(removeUser());
@@ -49,11 +47,6 @@ function App() {
     </div>;
   }
 
-  /*
-  const hideNavbarRoutes = ['/chat', '/upload-chat'];
-  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
-  */
-
   return (
     <Router>
         <div className="min-h-screen h-fit bg-gray-100">
@@ -63,13 +56,8 @@ function App() {
             <Route path='/' element={!user ? <Login /> : <Navigate to='/home' />} />
             <Route path='/signup' element={!user ? <SignUp /> : <Navigate to='/home' />} />
             <Route path='/home' element={user ? <HomePage /> : <Navigate to='/login' />} />
-            <Route path='/chat' element={user ?
-              <SharedDataProvider>
-                <ChatPage/>
-              </SharedDataProvider>
-               : <Navigate to='/login' />} />
-            <Route path='/upload-chat' element={user ? <UploadChat/> : <Navigate to='/login' />} />
             <Route path='/disaster-form' element={user ? <DisasterForm/> : <Navigate to='/login' />} />
+            <Route path='/disaster-view' element={user ? <DisasterView/> : <Navigate to='/login' />} />
           </Routes>
         </div>
     </Router>
