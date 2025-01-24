@@ -72,14 +72,6 @@ async def login(login_input: LoginInput):
 
 
 def add_user(username: str, email: str, password: str):
-  """
-  Add a user to the database with a hashed password.
-
-  Args:
-    username: The user's username.
-    email: The user's email.
-    password: The user's password.
-  """
   password_hash = bcrypt.hash(password)
 
   with conn.cursor() as cursor:
@@ -106,26 +98,31 @@ async def signup(login_input: LoginInput):
   # password is hashed
   password_hash = bcrypt.hash(login_input.password)
 
-  with conn.cursor() as cursor:
-    try:
-      # add the new user to the database
-      cursor.execute("""
-      INSERT INTO users (username, email, password_hash)
-      VALUES (%s, %s, %s);
-      """, (login_input.email.split('@')[0], login_input.email, password_hash))
-      conn.commit()
+  conn = get_connection()
+  cursor = conn.cursor()
 
-      cursor.execute("SELECT user_id FROM users WHERE email = %s;", (login_input.email,))
-      user_id = cursor.fetchone()
+  try:
+    # add the new user to the database
+    cursor.execute("""
+    INSERT INTO users (username, email, password_hash)
+    VALUES (%s, %s, %s);
+    """, (login_input.email.split('@')[0], login_input.email, password_hash))
+    conn.commit()
 
-    except Exception as e:
-      if "unique constraint" in str(e).lower():
-        raise HTTPException(status_code=400, detail="Email already in use.")
-      raise HTTPException(status_code=500, detail="An error occurred while signing up.")
-  # new user token is created
-  token = create_access_token(email=login_input.email)
-  expires_at = (datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)).isoformat()
-  return {"user_id": user_id, "email": login_input.email, "token": token, "expires_at": expires_at}
+    cursor.execute("SELECT user_id FROM users WHERE email = %s;", (login_input.email,))
+    user_id = cursor.fetchone()
+     # new user token is created
+    token = create_access_token(email=login_input.email)
+    
+    return {"user_id": user_id, "email": login_input.email, "token": token}
+
+  except Exception as e:
+    if "unique constraint" in str(e).lower():
+      raise HTTPException(status_code=400, detail="Email already in use.")
+    raise HTTPException(status_code=500, detail="An error occurred while signing up.")
+  finally:
+    cursor.close()
+    conn.close()
 
 
 @router.get("/user/session")

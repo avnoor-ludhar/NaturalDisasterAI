@@ -13,7 +13,7 @@ async def process_chatlog(file: UploadFile = File(...), user_id: int = Body(...)
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required.")
     
-    # check file type
+    # check file type   
     if not file.content_type.startswith("text/"):
         raise HTTPException(status_code=400, detail="Invalid file type. Please upload a valid text file.")
     

@@ -1,18 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from controllers.chatLogProcessing import router as chatlog_upload_router
+from controllers.disasterDataUpload import router as disaster_data_router
 from controllers.nebius import router as nebius_router
 from controllers.authentication import router as authentication_router
 from database.database import get_connection
 from utils.pinecone_db import clear_index
 
 app = FastAPI()
-'''
-API documentation is accessible at:
-
-Swagger UI: http://127.0.0.1:8000/docs
-Redoc UI: http://127.0.0.1:8000/redoc
-'''
 
 origins = [
   "http://localhost:5173", 
@@ -28,6 +23,8 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+
+app.include_router(disaster_data_router, prefix="/api", tags=["disaster_upload"])
 app.include_router(chatlog_upload_router, prefix="/api", tags=["chatlog_upload"])
 app.include_router(nebius_router, prefix="/api", tags=["nebius"])
 app.include_router(authentication_router, prefix="/api", tags=["authentication"])

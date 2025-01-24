@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "@/lib/axios";
 
 function DisasterForm(): JSX.Element {
     const [City, setCity] = useState("");
@@ -21,6 +22,7 @@ function DisasterForm(): JSX.Element {
     const [disasterType, setdisasterType] = useState("");
     const [disasterDescription, setdisasterDescription] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const user_id = localStorage.getItem("user_id")
     const navigate = useNavigate();
   
     const validatePage1 = () => {
@@ -32,11 +34,32 @@ function DisasterForm(): JSX.Element {
       return true;
     };
   
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       if (!validatePage1()) return;
-
-
+    
+      try {
+        const response = await api.post("/api/disaster-upload", {
+          City,
+          Province,
+          disasterType,
+          disasterDescription,
+          user_id
+        });
+        
+        navigate("/home");
+        console.log(response);
+      } catch (error: any) {
+        console.error("Error:", error);
+        if (error.response) {
+          // Log detailed backend response
+          console.error("Response Data:", error.response.data);
+          console.error("Status:", error.response.status);
+          console.error("Headers:", error.response.headers);
+        }
+        setError("Failed to submit the form. Please try again.");
+      }
     };
+    
 
   
     return (

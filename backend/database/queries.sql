@@ -31,3 +31,13 @@ CREATE TABLE images (
     image_data BYTEA NOT NULL, 
     uploaded_at TIMESTAMP DEFAULT NOW()
 );
+
+
+CREATE TABLE messages (
+    message_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
+    disaster VARCHAR(255) NOT NULL,
+    content TEXT,
+    CITY VARCHAR(255) NOT NULL,
+    PROVINCE VARCHAR(255) NOT NULL
+);
