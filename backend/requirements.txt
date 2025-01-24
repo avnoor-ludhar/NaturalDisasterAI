@@ -1,0 +1,26 @@
+fastapi
+uvicorn[standard] # includes watchgod and python-dotenv
+torch
+torchvision
+torchaudio
+numpy
+cython
+## detectron2
+pillow
+python-multipart
+python-dotenv
+requests
+openai
+bcrypt
+jwt
+python-jose
+jose
+# sqlite3
+
+# installation for embeddings
+transformers
+sentence-transformers
+pinecone
+psycopg2
+passlib
+fpdf

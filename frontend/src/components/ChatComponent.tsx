@@ -1,0 +1,149 @@
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import axios from 'axios';
+import { Button } from "./ui/button";
+import { Input } from './ui/input';
+import { Checkbox } from './ui/checkbox';
+import Message from './Message';
+import { useSharedData } from '@/components/SharedDataProvider';
+
+interface Message {
+  sender: 'user' | 'bot';
+  text: string;
+}
+
+interface ChatComponentProps {
+  user_id: number;
+}
+
+const ChatComponent: React.FC<ChatComponentProps> = ({ user_id }) => {
+
+  // Initialize States for each Chat element 
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputText, setInputText] = useState<string>('');
+  const [searchChat, setSearchChat] = useState(false);
+  const [searchImage, setSearchImages] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { setChatResponses, setImageResponses } = useSharedData();
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+  };
+
+  const handleCheckboxChange = (setState: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setState((prevState) => !prevState);
+  };
+
+  // Delivery of Message 
+  const sendMessage = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!inputText) {
+      alert('Please enter a message.');
+      return;
+    }
+
+    setIsLoading(true);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: 'user', text: inputText },
+    ]);
+
+    const payload = {
+      prompt: inputText,
+      user_id,
+      messages,
+      searchChat,
+      searchImage,
+    };
+
+    setInputText('');
+
+    // Response reception w/ Axois 
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/nebius-chat', payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const { pc_chat_response, pc_image_response } = response.data;
+      
+      setChatResponses(pc_chat_response || [])
+      setImageResponses(pc_image_response || [])
+
+      console.log('res:', response);
+
+      const botMessage: Message = {
+        sender: 'bot',
+        text: response.data.response.choices[0].message.content || 'No response from bot.',
+      };
+
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'bot', text: 'Error processing chat log.' },
+      ]);
+      setIsLoading(false);
+    }
+  };
+
+  // Chat Prompt Formatting 
+  
+  return (
+    <div className="max-w-[500px] mx-auto p-6 bg-white shadow-lg rounded-lg max-h-[550px] min-h-[550px] flex flex-col">
+      <div className="relative w-full h-fit min-h-[400px] max-h-[400px] flex flex-col overflow-y-auto hide-scrollbar">
+        {messages.map((message, index) => (
+          <Message key={index} text={message.text} person={message.sender} />
+        ))}
+        {isLoading && (
+          <div className="self-start bg-green-200 rounded-3xl p-4">
+            <div className="flex items-center justify-center h-5">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <form onSubmit={sendMessage} className="space-y-4 mt-4">
+        <Input
+          type="text"
+          value={inputText}
+          onChange={handleInputChange}
+          placeholder="Type your message..."
+          className="w-full p-4 rounded-lg border border-gray-300"
+        />
+
+        <div className="w-full flex flex-row justify-start gap-8">
+          <Button type="submit" className="py-3 text-black rounded-lg hover:bg-gray-100 bg-green-200">
+            Send
+          </Button>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="imageSearch"
+              onClick={(e) => handleCheckboxChange(setSearchImages)}
+            />
+            <label htmlFor="imageSearch" className="text-sm font-medium">
+              AI Image Search
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="chatSearch"
+              onClick={(e) => handleCheckboxChange(setSearchChat)}
+            />
+            <label htmlFor="chatSearch" className="text-sm font-medium">
+              AI Chat Log Search
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default ChatComponent;
