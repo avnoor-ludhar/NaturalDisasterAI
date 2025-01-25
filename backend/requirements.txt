@@ -1,10 +1,5 @@
 fastapi
 uvicorn[standard] # includes watchgod and python-dotenv
-torch
-torchvision
-torchaudio
-numpy
-cython
 
 pillow
 python-multipart

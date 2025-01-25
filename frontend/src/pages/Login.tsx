@@ -92,7 +92,7 @@ function Login(): JSX.Element {
     <div className='flex flex-col justify-center h-[calc(90vh-90px)] items-center w-full'>
       <Card className="w-[400px]">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold text-center bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-transparent bg-clip-text">Login</CardTitle>
+        <CardTitle className="text-2xl font-semibold text-center bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-transparent bg-clip-text">Login</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
       </CardHeader>
       <CardContent>
@@ -113,7 +113,7 @@ function Login(): JSX.Element {
           
         </CardContent>
         <CardFooter>
-          <Button className="w-full bg-green-600 text-white hover:bg-green-700" onClick={handleClick}>Login</Button> 
+          <Button className="w-full bg-red-600 text-white hover:bg-red-700" onClick={handleClick}>Login</Button> 
         </CardFooter>
       </Card>
       {error && <AlertDestructive error={error}/>}
