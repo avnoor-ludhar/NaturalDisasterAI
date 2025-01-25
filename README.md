@@ -27,10 +27,18 @@ To get started, follow these steps:
   ```bash
   cd NaturalDisasterAI
   ```
-3. Install the dependencies:
-  ```bash
-  npm install
+3. Go to the frontend:
   ```
+  cd frontend 
+  npm i
+  ```
+4. Go to the backend
+
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+``
 
 ## Usage
 To run the frontend locally, use the following command:
