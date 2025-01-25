@@ -6,22 +6,24 @@ const PreviousDisaster = () => {
   const [error, setError] = useState("");
 
   const getDataFromAPI = async () => {
-    try {
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: "/api/weather/latest/by-lat-lng?lat=12&lng=77", // Use the proxy route
-        headers: {
-          "x-api-key": "61837fe9130e349c0e9891d3b0646572a1fb576235009295bb5e4b8191c2e15b",
-        },
-      };
 
-      const { data } = await axios.request(config);
-      setWeatherData(data);
-    } catch (error) {
-      console.error(error);
-      setError("Failed to fetch weather data");
-    }
+    navigator.geolocation.getCurrentPosition(async (cords) => {
+        const config = {
+            method: "get",
+            maxBodyLength: Infinity,
+            url: `/api/weather/latest/by-lat-lng?lat=${cords.coords.latitude}&lng=${cords.coords.longitude}`,
+            headers: {
+              "x-api-key": "61837fe9130e349c0e9891d3b0646572a1fb576235009295bb5e4b8191c2e15b",
+            },
+          };
+        const { data } = await axios.request(config);
+        console.log(data.data);
+        setWeatherData(data.data);
+    }, (err) =>{
+       setError("Error fetching data from your location")
+       console.error(err);
+    });
+      
   };
 
   useEffect(() => {
@@ -78,7 +80,7 @@ const PreviousDisaster = () => {
             </div>
             <div className="mt-4 text-sm text-gray-500">
               <p>
-                <span className="font-bold">Updated At:</span> {new Date(weatherData.updatedAt).toLocaleString()}
+                <span className="font-bold">Updated At:</span> {weatherData.updatedAt}
               </p>
               <p>
                 <span className="font-bold">Timezone:</span> {weatherData.timezone}
