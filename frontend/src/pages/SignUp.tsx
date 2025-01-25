@@ -33,6 +33,8 @@ type ErrorResponse = {
     error: string | null;
   };
   
+
+//same logic as the login page but for sign-up
 function SignUp(): JSX.Element {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

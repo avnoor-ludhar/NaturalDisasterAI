@@ -22,8 +22,9 @@ function App() {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
   const [isUserChecked, setIsUserChecked] = useState(false);
-  // const location = useLocation();
 
+  
+  //useEffect run to check the session and add user to redux
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -41,6 +42,7 @@ function App() {
   }, [dispatch]);
 
 
+  //loading state
   if (!isUserChecked) {
     return <div className="flex justify-center items-center h-screen">
       <LoaderCircle className="animate-spin pr-2" />

@@ -33,6 +33,7 @@ type ErrorResponse = {
   error: string | null;
 };
   
+//login pasge using backend endpont and a form from ChadCN UI
 function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -41,6 +42,7 @@ function Login(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
 
+  //checks user session
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token || user) {
@@ -73,7 +75,7 @@ function Login(): JSX.Element {
         const newError = err as AxiosError<ErrorResponse>;
         setError(newError.response?.data?.error ?? 'Unknown error');
       }else{
-        console.log("Non-Axios error, most likely internal server error.");
+        console.log("Non-Axios error may be an internal server error");
       }
     }
   }

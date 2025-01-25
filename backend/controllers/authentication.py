@@ -42,6 +42,7 @@ router = APIRouter()
 def verify_password(plain_password: str, hashed_password: str) -> bool:
   return bcrypt.verify(plain_password, hashed_password)
 
+#creates a token which expires in the number of minutes described in the environment variables
 def create_access_token(email: str):
   expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
   to_encode = {"sub": email, "exp": expire}
@@ -70,7 +71,7 @@ async def login(login_input: LoginInput):
   return {"user_id": user_id_result['user_id'], "email": login_input.email, "token": token, "expires_at": expires_at}
 
 
-
+#Here is a 
 def add_user(username: str, email: str, password: str):
   password_hash = bcrypt.hash(password)
 
@@ -117,6 +118,7 @@ async def signup(login_input: LoginInput):
     return {"user_id": user_id, "email": login_input.email, "token": token}
 
   except Exception as e:
+    #checks if it violates the unique constraint in the email else generic error
     if "unique constraint" in str(e).lower():
       raise HTTPException(status_code=400, detail="Email already in use.")
     raise HTTPException(status_code=500, detail="An error occurred while signing up.")
@@ -134,6 +136,7 @@ async def check_session(request: Request):
   
   conn = get_connection()
   cursor = conn.cursor()
+  #gests the authorization token from the request headers 
   auth_header = request.headers.get("Authorization")
   if not auth_header or not auth_header.startswith("Bearer "):
     raise HTTPException(status_code=401, detail="Token missing or invalid")
@@ -141,7 +144,7 @@ async def check_session(request: Request):
   token = auth_header.split(" ")[1]  # Get the token part
 
   try:
-    # token is chosen
+    # token is checked against key to ensure no tampering
     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     email = payload.get("sub")
 

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
+//Basic homepage using ChadCN UI to ensure ability to navigate to different pages
 function HomePage() {
   const navigate: NavigateFunction = useNavigate();
 

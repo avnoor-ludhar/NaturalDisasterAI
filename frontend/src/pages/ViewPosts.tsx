@@ -3,6 +3,7 @@ import api from "@/lib/axios";
 import Post from "@/components/Post";
 
 
+//displays all posts
 function DisasterView(): JSX.Element {
     const [posts, setPosts]= useState<any[]>([]);
 

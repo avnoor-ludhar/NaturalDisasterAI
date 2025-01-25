@@ -15,6 +15,7 @@ import { User } from "@/redux/features/userSlice";
 import { useLogout, LogoutHook } from "@/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 
+//navbar to move between pages
 export default function Navbar(): JSX.Element{
     const user: User | null = useAppSelector<User | null>(state=>state.user.user);
     const {logout}: LogoutHook = useLogout();
@@ -27,8 +28,9 @@ export default function Navbar(): JSX.Element{
         navigate('/');
     }
 
-    const hideNavbarRoutes = ['/home', '/disaster-form', '/disaster-view'];
-    const shouldShowNavbar = hideNavbarRoutes.includes(location.pathname);
+    //routes that will hide the navbar through conditional tests
+    const showNavbarRoutes = ['/home', '/disaster-form', '/disaster-view'];
+    const shouldShowNavbar = showNavbarRoutes.includes(location.pathname);
 
     return(
         <div>
@@ -67,5 +69,4 @@ export default function Navbar(): JSX.Element{
         </div>
     )
 };
-
-//                    
+       

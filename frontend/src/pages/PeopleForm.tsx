@@ -25,6 +25,7 @@ function DisasterForm(): JSX.Element {
     const user_id = localStorage.getItem("user_id")
     const navigate = useNavigate();
   
+    //checks if all fields are added 
     const validatePage1 = () => {
       if (!City || !disasterType || !disasterDescription || !Province) {
         setError("Please fill out all fields on this page.");
@@ -34,6 +35,7 @@ function DisasterForm(): JSX.Element {
       return true;
     };
   
+    //submit for the backend route
     const handleSubmit = async () => {
       if (!validatePage1()) return;
     
@@ -59,8 +61,6 @@ function DisasterForm(): JSX.Element {
         setError("Failed to submit the form. Please try again.");
       }
     };
-    
-
   
     return (
       <>

@@ -1,14 +1,13 @@
 from typing import Dict
-from fastapi import APIRouter, Body, File, HTTPException, UploadFile
+from fastapi import APIRouter, Body, HTTPException
 from database.database import get_connection
-import re
 from pydantic import BaseModel
 from datetime import datetime 
 
-
-
+# Gets a router to modularize the code
 router = APIRouter()
 
+# Pydantic model for the data from the front-end form
 class userData(BaseModel):
     City: str
     Province: str
@@ -16,6 +15,7 @@ class userData(BaseModel):
     disasterDescription: str
     user_id: int
 
+#post route to upload the disaster input, checks for the user_id for securing the backend
 @router.post("/disaster-upload")
 async def disasterUpload(data: userData = Body(...)):
     
@@ -23,11 +23,12 @@ async def disasterUpload(data: userData = Body(...)):
         raise HTTPException(status_code=400, detail="User ID is required.")
     
 
+    #opens a connection to the database
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
-        # Insert into the database
+        # Insertion logic for the database
         query = """
         INSERT INTO messages (user_id, disaster, content, city, province, curr_time)
         VALUES (%s, %s, %s, %s, %s, %s);
@@ -56,15 +57,16 @@ async def disasterUpload(data: userData = Body(...)):
             conn.close()
     
 
+#route to return 10 retu
 @router.get("/disaster-posts")
 async def disasterUpload():    
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
-        # Insert into the database
+        # Gets data from the database ordering by the date
         query = """
-        SELECT * FROM  messages LIMIT 10;
+        SELECT * FROM  messages ORDER BY curr_time DESC LIMIT 10;
         """
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -72,7 +74,7 @@ async def disasterUpload():
         return {"data": rows}
         
     except Exception as e:
-        print(f"Error inserting trade decision: {e}")
+        print(f"Error inserting disaster information: {e}")
         raise HTTPException(status_code=400, detail="DB error.")
         
     finally:

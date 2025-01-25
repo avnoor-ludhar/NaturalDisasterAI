@@ -7,6 +7,7 @@ const PreviousDisaster = () => {
 
   const getDataFromAPI = async () => {
 
+    //gets current location and gets weather data for this location
     navigator.geolocation.getCurrentPosition(async (cords) => {
         const config = {
             method: "get",
@@ -26,6 +27,7 @@ const PreviousDisaster = () => {
       
   };
 
+  //gets data on load
   useEffect(() => {
     getDataFromAPI();
   }, []);
