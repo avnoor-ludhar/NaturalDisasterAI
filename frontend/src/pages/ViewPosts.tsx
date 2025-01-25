@@ -23,8 +23,8 @@ function DisasterView(): JSX.Element {
     return (
       <>
         <div className="flex flex-row flex-wrap gap-6 justify-center my-10">
-            {posts?.map((post: any)=>
-                <Post post={post}/>
+            {posts?.map((post, i)=>
+                <Post post={post} key={i}/>
             )
             }
         </div>

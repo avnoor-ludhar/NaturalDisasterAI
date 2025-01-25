@@ -51,10 +51,10 @@ export default function Navbar(): JSX.Element{
                                 <Link to="/disaster-form" >
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>Add Updates</NavigationMenuLink>
                                 </Link>
-                                <Link to="/chat" >
+                                <Link to="/disaster-view" >
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>View Recent Updates</NavigationMenuLink>
                                 </Link>
-                                <Link to="/itinerary" >
+                                <Link to="/prev-data" >
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>Generate itinerary</NavigationMenuLink>
                                 </Link>
                             </NavigationMenuContent>

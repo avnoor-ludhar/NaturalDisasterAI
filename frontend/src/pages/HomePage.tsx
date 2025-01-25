@@ -52,7 +52,7 @@ function HomePage() {
             <p>Click here to see history of natural disasters</p>
           </CardContent>
           <CardFooter className="mt-auto">
-            <Button className="w-full py-3 text-black rounded-lg hover:bg-red-400 bg-red-600" onClick={handleDisasterView}>View Previous Disasters</Button>
+            <Button className="w-full py-3 text-black rounded-lg hover:bg-red-400 bg-red-600" onClick={() => navigate("/prev-data")}>View Previous Disasters</Button>
           </CardFooter>
         </Card>
       </div>

@@ -11,6 +11,7 @@ import Navbar from './components/navbar';
 import { LoaderCircle } from 'lucide-react';
 import DisasterForm from './pages/PeopleForm';
 import DisasterView from './pages/ViewPosts';
+import PreviousDisaster from './pages/PreviousDisaster';
 
 type userType = {
   email: string,
@@ -58,6 +59,7 @@ function App() {
             <Route path='/home' element={user ? <HomePage /> : <Navigate to='/login' />} />
             <Route path='/disaster-form' element={user ? <DisasterForm/> : <Navigate to='/login' />} />
             <Route path='/disaster-view' element={user ? <DisasterView/> : <Navigate to='/login' />} />
+            <Route path='/prev-data' element={user ? <PreviousDisaster/> : <Navigate to='/login' />} />
           </Routes>
         </div>
     </Router>
